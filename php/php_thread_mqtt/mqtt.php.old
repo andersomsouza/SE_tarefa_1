@@ -1,0 +1,47 @@
+<?php
+
+$mysql_host = 'localhost';
+$mysql_db = 'mysql';
+$PDO = null;
+while (TRUE) {
+	try {
+		$PDO = new PDO('mysql:host=' . $mysql_host . ';dbname=' . $mysql_db, 'root', '', array(
+			PDO::ATTR_PERSISTENT => true,
+		));
+		break;
+	} catch (PDOException $e) {
+		echo 'Erro ao conectar com o MySQL: ' . $e->getMessage();
+		file_put_contents('/opt/php_erro', $e->getMessage());
+		sleep(3);
+	}
+}
+
+/* ClientID */
+$client = new Mosquitto\Client('MyClient');
+
+/* Credenciais (usuario e senha) */
+$client->setCredentials('ander', 'ander123');
+
+/* Callback da conexao */
+$client->onConnect(function ($code, $message) use ($client) {
+	/* Topico */
+	$client->subscribe('#', 0);
+});
+
+/* Callback da mensagem */
+$client->onMessage(function ($message) use ($PDO) {
+	/* exibe a mensagem e payload */
+	echo $message->topic, "\n", $message->payload, "\n";
+	if (!is_null($PDO)) {
+		$preparedStmt = $PDO->prepare('INSERT INTO MQTT (payload, topico) VALUES (?,?)');
+		$preparedStmt->bindValue(1, $message->payload);
+		$preparedStmt->bindValue(2, $message->topic);
+		$preparedStmt->execute();
+	}
+});
+
+/* Connecta ao host remoto */
+$client->connect('localhost', 1883);
+
+/* Mantem-se em execucao */
+$client->loopForever();

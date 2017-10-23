@@ -1,0 +1,21 @@
+Mosquitto Server (Broker) com Autenticação
+Redis
+MySQL
+Apache 2 Php7 + FastCGI
+MosquittoPhp
+
+// Usa Redis para salvar ultimo estado de todos tópicos
+// Substituí o Redis pela conexao websocket do MQTT
+// Usa mysql para registrar valores de sensores (com consulta)
+// Thread em php que gerencia o recebimento dos tópicos e registro no banco de dados
+
+
+Topicos MQTT
+
+/(arduino|esp8266)/(id)/(topico)
+
+id: a partir de 0
+topico: 
+ *alive = tempo de programa rodando (sub)
+ *led = led embutido (payload: 0,1) (pub)
+ *temperatura = sensor de temperatura	(sub)
