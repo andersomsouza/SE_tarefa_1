@@ -33,7 +33,7 @@ URI:  `/(arduino|esp8266)/(id)/(topico)`
 
 | Parametro          |                Descrição                      |
 |--------------------|-----------------------------------------------|
-|`(arduino|esp8266)` | Selecionar um desses dependendo da plataforma |
+|`(arduino\|esp8266)` | Selecionar um desses dependendo da plataforma |
 | `(id)`             | Especificar id unico para a plataforma (0...n)|
 | `(topico)`         | Topico especifico \*                          |
 
