@@ -1,0 +1,3 @@
+[submodule "php/php_websv_v2/izi"]
+	path = php/php_websv_v2/izi
+	url = https://github.com/andersomsouza/izi
