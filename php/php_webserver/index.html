@@ -1,71 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet"/>
-    </head>
+
+<head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link rel="stylesheet" href="./css/reset.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/estilo.css">
+</head>
+
 </html>
 <style>
-    /* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {display:none;}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
 </style>
+
 <body class="blue-grey darken-4 valign-wrapper" style="min-height: 100vh; overflow: hidden;">
     <div class="container">
         <div class="card hoverable">
@@ -93,16 +40,16 @@ input:checked + .slider:before {
                     <div class="row">
                         <div class="input-field col s12">
                             <input class="validate" id="username" type="text">
-                                <label class="pink-text text-darken-2" for="username ">
-                                    Nome de Usuario
-                                </label>
+                            <label class="pink-text text-darken-2" for="username ">
+                                Nome de Usuario
+                            </label>
                             </input>
                         </div>
                         <div class="input-field col s12">
                             <input class="validate" id="senha" placeholder="*******" type="password">
-                                <label class="pink-text text-darken-2" for="senha">
-                                    Senha
-                                </label>
+                            <label class="pink-text text-darken-2" for="senha">
+                                Senha
+                            </label>
                             </input>
                         </div>
                     </div>
@@ -143,25 +90,27 @@ input:checked + .slider:before {
                                         Ultima atualização:
                                     </strong>
                                     <span class="grey-text darken-2">
-                                        Há 15 minutos
+                                        Há 15 minuto
                                     </span>
                                 </p>
                                 <p class="grey-text darken-2">
                                     Programa rodando há
                                     <span id="tempoRodando">
-                                    </span>
-                                    segundos
+                                    </span> segundos
                                 </p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                <label class="switch">
-                                    <input type="checkbox">
+                                <div>Led:</div>
+                                <div>
+                                    <label class="switch">
+                                        <input type="checkbox">
                                         <span class="slider round">
                                         </span>
-                                    </input>
-                                </label>
+                                        </input>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -181,34 +130,33 @@ input:checked + .slider:before {
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js">
     </script>
     <script>
-        $('#btnLogin').click(()=>{
-                $('#msg').html('Conectando....');
-                var client = mqtt.connect(
-                    {   
-                        host:"anderhome1.ddns.net",
-                        port:1884,
-                        reconnectPeriod: 1000,
-                        connectTimeout: 30 * 1000,
-                        username: 'ander',
-                        password: 'ander123'
-                    })
-                client.on('error',(err)=>{$('#msg').html('Erro na conexão');})
-                client.on('connect',()=>{$('#msg').html('Conectado');;})
-                
-                client.on('offline', function (a) {
-                  $('#msg').html('Cliente offline');
-                })
-                client.on('close', function (a) {
-                  $('#msg').html('Erro na conexão');
-                })
-                client.subscribe('#')
-                client.on('message', function (topic, message) {
-                    switch(topic){
+    $('#btnLogin').click(() => {
+        $('#msg').html('Conectando....');
+        var client = mqtt.connect({
+            host: "anderhome1.ddns.net",
+            port: 1884,
+            reconnectPeriod: 1000,
+            connectTimeout: 30 * 1000,
+            username: 'ander',
+            password: 'ander123'
+        })
+        client.on('error', (err) => { $('#msg').html('Erro na conexão'); })
+        client.on('connect', () => { $('#msg').html('Conectado');; })
+
+        client.on('offline', function(a) {
+            $('#msg').html('Cliente offline');
+        })
+        client.on('close', function(a) {
+            $('#msg').html('Erro na conexão');
+        })
+        client.subscribe('#')
+        client.on('message', function(topic, message) {
+            switch (topic) {
 
 
-                    }
-                    $('#tempoRodando').html(message.toString().toLowerCase());
-                })
-            });
+            }
+            $('#tempoRodando').html(message.toString().toLowerCase());
+        })
+    });
     </script>
 </body>
